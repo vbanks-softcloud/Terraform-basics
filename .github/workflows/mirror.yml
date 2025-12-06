@@ -44,12 +44,18 @@ jobs:
       #
       - name: Mirror to Bitbucket
         env:
-          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
-          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_PAT }}
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}   # vbanks-softcloud-admin
+          BITBUCKET_PAT:  ${{ secrets.BITBUCKET_PAT }}    # Bitbucket API token
         run: |
+          set -e
           AUTH_URL="https://${BITBUCKET_USER}:${BITBUCKET_PAT}@bitbucket.org/vbanks-softcloud/terraform-basics-backup.git"
+
+          # Clean old remote if it exists
+          git remote remove bitbucket 2>/dev/null || true
+
           git remote add bitbucket "$AUTH_URL"
           git push bitbucket --all
           git push bitbucket --tags
+
 
 
