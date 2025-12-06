@@ -31,13 +31,13 @@ jobs:
       # --- Mirror to Azure DevOps ---
       #
       - name: Mirror to Azure DevOps
+        env:
+          AZURE_PAT: ${{ secrets.AZURE_PAT }}
         run: |
-          git remote add azure "https://${AZURE_USER}:${AZURE_PAT}@dev.azure.com/REALORG/REALPROJECT/_git/REALREPO"
+          git remote add azure "https://vincecareer:${AZURE_PAT}@dev.azure.com/vincecareer/Terraform-basics-backup/_git/Terraform-basics-backup"
           git push azure --all
           git push azure --tags
-        env:
-          AZURE_USER: ${{ secrets.AZURE_USER }}
-          AZURE_PAT:  ${{ secrets.AZURE_PAT }}
+
 
 
       #
