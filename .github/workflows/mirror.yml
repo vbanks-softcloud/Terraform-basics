@@ -32,12 +32,13 @@ jobs:
       #
       - name: Mirror to Azure DevOps
         run: |
-          git remote add azure "https://${AZURE_USER}:${AZURE_PAT}@dev.azure.com/vbanks-softcloud/CloudProjects/_git/terraform-basics-backup"
+          git remote add azure "https://${AZURE_USER}:${AZURE_PAT}@dev.azure.com/REALORG/REALPROJECT/_git/REALREPO"
           git push azure --all
           git push azure --tags
         env:
           AZURE_USER: ${{ secrets.AZURE_USER }}
           AZURE_PAT:  ${{ secrets.AZURE_PAT }}
+
 
       #
       # --- Mirror to Bitbucket ---
