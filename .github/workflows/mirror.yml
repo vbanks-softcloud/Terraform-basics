@@ -39,15 +39,17 @@ jobs:
           git push azure --tags
 
 
-
       #
       # --- Mirror to Bitbucket ---
       #
       - name: Mirror to Bitbucket
         env:
-          BITBUCKET_PAT: ${{ secrets.BITBUCKET_PAT }}   # Bitbucket app password
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_PAT }}
         run: |
-          git remote add bitbucket "https://vbanks-softcloud-admin:${BITBUCKET_PAT}@bitbucket.org/vbanks-softcloud/terraform-basics-backup.git"
+          AUTH_URL="https://${BITBUCKET_USER}:${BITBUCKET_PAT}@bitbucket.org/vbanks-softcloud/terraform-basics-backup.git"
+          git remote add bitbucket "$AUTH_URL"
           git push bitbucket --all
           git push bitbucket --tags
+
 
