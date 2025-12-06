@@ -1,0 +1,52 @@
+name: Mirror Repository to GitLab, Azure, and Bitbucket
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      #
+      # --- Mirror to GitLab ---
+      #
+      - name: Mirror to GitLab
+        run: |
+          git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@${GITLAB_URL#https://}"
+          git push --mirror gitlab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITLAB_URL: ${{ secrets.GITLAB_URL }}
+
+      #
+      # --- Mirror to Azure DevOps ---
+      #
+      - name: Mirror to Azure DevOps
+        run: |
+          git remote add azure "https://${AZURE_PAT}@${AZURE_URL#https://}"
+          git push --mirror azure
+        env:
+          AZURE_PAT: ${{ secrets.AZURE_PAT }}
+          AZURE_URL: ${{ secrets.AZURE_URL }}
+
+      #
+      # --- Mirror to Bitbucket ---
+      #
+      - name: Mirror to Bitbucket
+        run: |
+          git remote add bitbucket "https://${BITBUCKET_USER}:${BITBUCKET_PAT}@${BITBUCKET_URL#https://}"
+          git push --mirror bitbucket
+        env:
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_PAT: ${{ secrets.BITBUCKET_PAT }}
+          BITBUCKET_URL: ${{ secrets.BITBUCKET_URL }}
+
